@@ -19,6 +19,7 @@ interface IPostType {
     public function getIdentifier();
     public function getPluralName();
     public function getSingularName();
+    public function getRewriteSlug();
 
     // Behaviour changes
     public function isArchivable();

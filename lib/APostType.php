@@ -50,6 +50,10 @@ abstract class APostType {
                 'singular_name' => __($this->getSingularName()),
             ),
 
+            'rewrite' => array(
+                'slug' => $this->getRewriteSlug(),
+            ),
+
             'has_archive' => $this->isArchivable(),
             'public'      => $this->isPublic(),
 
@@ -69,6 +73,10 @@ abstract class APostType {
         foreach ($this->getFields() as $field) {
             $field->doSave($post_id, $post);
         }
+    }
+
+    public function getRewriteSlug() {
+        return $this->getIdentifier();
     }
 
     public function isArchivable() {
