@@ -63,13 +63,15 @@ abstract class AField {
         $post_key = $meta_key . '_value';
         $value    = (array_key_exists($post_key, $_POST)) ? $_POST[$post_key] : NULL;
 
-        if (get_post_meta($post->ID, $meta_key, true)) {
-            if ($value) {
-                update_post_meta($post->ID, $meta_key, $value);
-            } else {
-                delete_post_meta($post->ID, $meta_key);
-            }
+        $existing_values = get_post_meta($post->ID, $meta_key);
+        if (count($existing_values) === 1 && $value) {
+            update_post_meta($post->ID, $meta_key, $value);
+            return;
         } else {
+            delete_post_meta($post->ID, $meta_key);
+        }
+
+        if ($value) {
             add_post_meta($post->ID, $meta_key, $value);
         }
     }
