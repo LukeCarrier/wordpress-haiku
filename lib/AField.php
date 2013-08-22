@@ -30,14 +30,14 @@ abstract class AField {
 
         return '<input type="hidden" name="' . $id . '" '
              . 'id="' . $id .'" '
-             . 'value="' . wp_create_nonce(plugin_basename(__FILE__)) . '" />';
+             . 'value="' . wp_create_nonce($this->getIdentifier()) . '" />';
     }
 
     final protected function verifyNonce($post) {
         $id = $this->getIdentifier() . '_nonce';
 
         if (!array_key_exists($id, $_POST)
-                || !wp_verify_nonce($_POST[$id], plugin_basename(__FILE__))
+                || !wp_verify_nonce($_POST[$id], $this->getIdentifier())
                 || !current_user_can('edit_post', $post->ID)
                 || $post->post_type === 'revision') {
             return false;
