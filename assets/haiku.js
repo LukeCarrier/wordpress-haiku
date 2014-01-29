@@ -23,9 +23,6 @@
             var fieldName = $(this).data('field-name');
             var $field    = $('input[name=' + fieldName + ']');
 
-            console.log(fieldName);
-            console.log($field);
-
             tb_show('', 'media-upload.php?TB_iframe=true');
 
             window.send_to_editor = function(html) {
