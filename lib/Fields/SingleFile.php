@@ -15,8 +15,12 @@ class SingleFile extends AField implements IField {
     public function getMetaBoxHtml($post) {
         list($meta_key, $post_key, $value) = $this->getMetaBoxDetails($post->ID);
 
-        $upload_dir = wp_upload_dir();
-        $value = $upload_dir['baseurl'] . '/' . $value;
+        if ($value) {
+            $upload_dir = wp_upload_dir();
+            $value      = $upload_dir['baseurl'] . '/' . $value;
+        } else {
+            $value = '__remove__';
+        }
 
         echo $this->getNonceHtml(),
              '<img src="' . $value . '" alt="" class="haiku-attachment-thumbnail" />',
@@ -42,14 +46,17 @@ class SingleFile extends AField implements IField {
         $value = substr($value, strlen($upload_dir['baseurl']) + 1);
 
         $existing_values = get_post_meta($post->ID, $meta_key);
-        if (count($existing_values) === 1 && $value) {
+        if ($value === '__remove__') {
+            delete_post_meta($post->ID, $meta_key);
+            return;
+        } elseif (count($existing_values) === 1 && $value) {
             update_post_meta($post->ID, $meta_key, $value);
             return;
         } else {
             delete_post_meta($post->ID, $meta_key);
         }
 
-        if ($value) {
+        if ($value !== '__remove__') {
             add_post_meta($post->ID, $meta_key, $value);
         }
     }

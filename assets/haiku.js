@@ -14,7 +14,7 @@
             var fieldName = $(this).data('field-name');
             var $field     = $('input[name=' + fieldName + ']');
 
-            $field.val('');
+            $field.val('__remove__');
 
             return false;
         });
