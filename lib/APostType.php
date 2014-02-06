@@ -12,6 +12,8 @@ namespace Haiku;
 abstract class APostType {
     protected static $initialised = false;
 
+    protected $existing_taxonomies = array();
+
     final public function __construct() {
         static::initialise();
     }
@@ -41,8 +43,8 @@ abstract class APostType {
     }
 
     final public function register() {
-        $this->registerPostType();
         $this->registerTaxonomies();
+        $this->registerPostType();
     }
 
     final public function registerFields() {
@@ -65,7 +67,11 @@ abstract class APostType {
             'has_archive' => $this->isArchivable(),
             'public'      => $this->isPublic(),
 
-            'register_meta_box_cb' => array($this, 'registerFields')
+            'register_meta_box_cb' => array($this, 'registerFields'),
+
+            'taxonomies' => $this->existing_taxonomies,
+
+            'supports'   => $this->supports,
         ));
 
         add_action('save_post', array($this, 'doSave'), 10, 2);
@@ -73,7 +79,11 @@ abstract class APostType {
 
     final public function registerTaxonomies() {
         foreach ($this->getTaxonomies() as $taxonomy) {
-            $taxonomy->register($this->getIdentifier());
+            if ($taxonomy instanceof ITaxonomy) {
+                $taxonomy->register($this->getIdentifier());
+            } else {
+                $this->existing_taxonomies[] = $taxonomy;
+            }
         }
     }
 
@@ -93,5 +103,9 @@ abstract class APostType {
 
     public function isPublic() {
         return true;
+    }
+
+    public function supports() {
+        return array();
     }
 }

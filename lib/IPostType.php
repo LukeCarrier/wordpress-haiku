@@ -28,4 +28,5 @@ interface IPostType {
     // The fun stuff
     public function getFields();
     public function getTaxonomies();
+    public function supports();
 }
