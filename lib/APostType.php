@@ -71,7 +71,7 @@ abstract class APostType {
 
             'taxonomies' => $this->existing_taxonomies,
 
-            'supports'   => $this->supports,
+            'supports'   => $this->supports(),
         ));
 
         add_action('save_post', array($this, 'doSave'), 10, 2);
