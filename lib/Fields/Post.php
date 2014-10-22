@@ -12,9 +12,18 @@ use Haiku\AField,
     Haiku\IField;
 
 class Post extends AField implements IField {
-    public function getMetaBoxHtml($post) {
+    public function getMetaBoxHtmlForPost($post) {
         list($meta_key, $post_key, $value) = $this->getPostDetails($post->ID);
+        $this->getMetaBox($meta_key, $post_key, $value);
+    }
 
+    public function getMetaBoxHtmlForTerm($term) {
+        list($meta_key, $post_key, $value) = $this->getPostDetails($term->taxonomy,
+                                                                   $term->term_id);
+        $this->getMetaBox($meta_key, $post_key, $value);
+    }
+
+    protected function getMetaBox($meta_key, $post_key, $value) {
         $value = (int) $value ?: 0;
         $posts = $this->getSelectOptions();
 

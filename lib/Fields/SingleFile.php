@@ -12,7 +12,7 @@ use Haiku\AField,
     Haiku\IField;
 
 class SingleFile extends AField implements IField {
-    public function getMetaBoxHtml($post) {
+    public function getMetaBoxHtmlForPost($post) {
         list($meta_key, $post_key, $value) = $this->getPostDetails($post->ID);
 
         if ($value) {
@@ -33,7 +33,11 @@ class SingleFile extends AField implements IField {
              '       data-field-name="' . $post_key . '" value="' . __('Remove media') . '" />';
     }
 
-    public function doSave($post_id, $post) {
+    public function getMetaBoxHtmlForTerm($term) {
+        echo 'Single file fields are not compatible with taxonomies';
+    }
+
+    public function doSaveForPost($post_id, $post) {
         if (!$this->verifyNonce($post)) {
             return;
         }
@@ -59,5 +63,8 @@ class SingleFile extends AField implements IField {
         if ($value !== '__remove__') {
             add_post_meta($post->ID, $meta_key, $value);
         }
+    }
+
+    public function doSaveForTerm($term_id) {
     }
 }
