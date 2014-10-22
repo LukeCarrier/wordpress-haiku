@@ -21,4 +21,7 @@ interface ITaxonomy {
 
     // Behaviour changes
     public function isHierarchical();
+
+    // The fun stuff
+    public function getFields();
 }

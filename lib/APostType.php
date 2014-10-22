@@ -42,6 +42,10 @@ abstract class APostType {
         static::$initialised = true;
     }
 
+    public function getFields() {
+        return array();
+    }
+
     final public function register() {
         $this->registerTaxonomies();
         $this->registerPostType();
@@ -49,7 +53,7 @@ abstract class APostType {
 
     final public function registerFields() {
         foreach ($this->getFields() as $field) {
-            $field->register($this->getIdentifier());
+            $field->registerOnPostType($this->getIdentifier());
         }
     }
 
@@ -89,7 +93,7 @@ abstract class APostType {
 
     final public function doSave($post_id, $post) {
         foreach ($this->getFields() as $field) {
-            $field->doSave($post_id, $post);
+            $field->doSaveForPost($post_id, $post);
         }
     }
 

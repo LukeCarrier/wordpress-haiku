@@ -13,7 +13,7 @@ use Haiku\AField,
 
 class Date extends AField implements IField {
     public function getMetaBoxHtml($post) {
-        list($meta_key, $post_key, $value) = $this->getMetaBoxDetails($post->ID);
+        list($meta_key, $post_key, $value) = $this->getPostDetails($post->ID);
 
         echo $this->getNonceHtml(),
              '<input type="text" name="' . $post_key . '" ',
