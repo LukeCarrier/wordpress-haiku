@@ -22,7 +22,7 @@ abstract class AField {
 
     final public function registerOnPostType($post_type_identifier) {
         add_meta_box($this->getIdentifier(), $this->getTitle(),
-                     array($this, 'getMetaBoxHtml'), $post_type_identifier);
+                     array($this, 'getMetaBoxHtmlForPost'), $post_type_identifier);
     }
 
     final public function registerOnTaxonomy($taxonomy_identifier, $mode,
